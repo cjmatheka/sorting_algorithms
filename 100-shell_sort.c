@@ -17,12 +17,15 @@ void shell_sort(int *array, size_t size)
 	while (interval <= (int) (size / 3))
 		interval = interval * 3 + 1;
 
-	while (interval > 0) {
-		for (i = interval; i < (int) size; i++) {
+	while (interval > 0)
+	{
+		for (i = interval; i < (int) size; i++)
+		{
 			temp = array[i];
 			j = i;
 
-			while (j >= interval && array[j - interval] > temp) {
+			while (j >= interval && array[j - interval] > temp)
+			{
 				array[j] = array[j - interval];
 				j -= interval;
 			}
