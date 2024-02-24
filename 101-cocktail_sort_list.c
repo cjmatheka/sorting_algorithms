@@ -1,67 +1,74 @@
 #include "sort.h"
 
 /**
- * cocktail_sort_list - Sorts a doubly linked list of integers
- *                      in ascending order using Cocktail Shaker sort algorithm
- * @list: Pointer to a pointer to the head of the list
+ * swap_next - Swaps two adjacent nodes in the doubly linked list
+ * @list: Pointer to the head of the list
+ *
+ * Return: Pointer to the new head of the potentially modified list segment
+ */
+listint_t *swap_next(listint_t **list) {
+	listint_t *temp, *head = *list;
+
+	if (!head || !head->next)
+		return head;
+
+	temp = head->next;
+
+	if (head->prev)
+		head->prev->next = temp;
+	if (temp->next)
+		temp->next->prev = head;
+
+	temp->prev = head->prev;
+	head->next = temp->next;
+	head->prev = temp;
+	temp->next = head;
+
+	if (temp->prev == NULL)
+		*list = temp;
+
+	return temp;
+}
+
+/**
+ * cocktail_sort_list - Sorts a doubly linked list using Cocktail Shaker Sort
+ * @list: Pointer to the head of the list
  */
 void cocktail_sort_list(listint_t **list) {
-	int swapped;
-	listint_t *current;
+	int swapped = 1;
+	listint_t *start, *end;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
+	if (!list || !*list)
 		return;
 
-	swapped = 1;
+	start = *list;
+	end = NULL;
+
 	while (swapped) {
 		swapped = 0;
 
-		/* Forward iteration (bubble sort) */
-		for (current = *list; current->next != NULL; current = current->next) {
-			if (current->n > current->next->n) {
-				/* Swap nodes */
-				if (current->prev != NULL)
-					current->prev->next = current->next;
-				else
-					*list = current->next;
-
-				if (current->next->next != NULL)
-					current->next->next->prev = current;
-
-				current->next->prev = current->prev;
-				current->prev = current->next;
-				current->next = current->next->next;
-				current->prev->next = current;
-
+		/* Forward pass */
+		while (start->next != end) {
+			if (start->n > start->next->n) {
+				start = swap_next(&start);
 				swapped = 1;
 				print_list(*list);
+			} else {
+				start = start->next;
 			}
 		}
 
-		/* Check if no swap occurred */
-		if (!swapped)
-			break;
+		end = start;
+		start = start->prev;
 
-		swapped = 0;
-
-		/* Backward iteration (bubble sort) */
-		for (; current->prev != NULL; current = current->prev) {
-			if (current->prev->n > current->n) {
-				/* Swap nodes */
-				if (current->next != NULL)
-					current->next->prev = current->prev;
-
-				current->prev->next = current->next;
-				current->next = current->prev;
-				current->prev = current->prev->prev;
-
-				if (current->prev != NULL)
-					current->prev->next = current;
-				else
-					*list = current;
-
+		/* Backward pass */
+		while (start->prev != NULL) {
+			if (start->n < start->prev->n) {
+				start = swap_next(&start->prev);
 				swapped = 1;
 				print_list(*list);
+			} else {
+				start = start->prev;
 			}
 		}
 	}
