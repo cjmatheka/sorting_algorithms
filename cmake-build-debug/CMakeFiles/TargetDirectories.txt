@@ -1,0 +1,3 @@
+/home/cjweb/Desktop/Software Engineering/AlxAfricaSE/sorting_algorithms/cmake-build-debug/CMakeFiles/sorting_algorithms.dir
+/home/cjweb/Desktop/Software Engineering/AlxAfricaSE/sorting_algorithms/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cjweb/Desktop/Software Engineering/AlxAfricaSE/sorting_algorithms/cmake-build-debug/CMakeFiles/rebuild_cache.dir
